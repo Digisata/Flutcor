@@ -1,0 +1,1 @@
+export 'corona_repository.dart';

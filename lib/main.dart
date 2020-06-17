@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutcor',
       theme: ThemeData(
         primaryColor: Colors.blue[600],
-        fontFamily: 'Montserrat',
+        fontFamily: 'Padauk',
       ),
     );
   }
