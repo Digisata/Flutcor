@@ -9,7 +9,7 @@ class CoronaRepository {
 
   Future<TokenModel> getToken() async {
     String _tokenUrl = '$_baseUrl/token';
-    var _header = {
+    Map<String, String> _header = {
       HttpHeaders.authorizationHeader:
           'Basic WnFodW02YXVYNGt0UXdxQ2pleGNISDFDTWg4YToxeFk4U1IyeGp0RExMTl9PUHRnWG53N1IxNmNh'
     };
@@ -19,40 +19,14 @@ class CoronaRepository {
   }
 
   getData(TokenModel token, String flag) async {
-    var _accessToken = token.accessToken;
-    var _url = '$_baseUrl/t/nubentos.com/ncovapi/2.0.0/$flag';
-    var _header = {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $_accessToken'};
+    String _accessToken = token.accessToken;
+    String _url = '$_baseUrl/t/nubentos.com/ncovapi/2.0.0/$flag';
+    Map<String, String> _header = {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer $_accessToken'
+    };
     var _response = await http.get(_url, headers: _header);
     var _data = jsonDecode(_response.body);
     return _data[0]['data'];
   }
-
-  /* getCases(TokenModel token) async {
-    var _accessToken = token.accessToken;
-    var _url = '$_baseUrl/t/nubentos.com/ncovapi/2.0.0/cases';
-    var _header = {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $_accessToken'};
-    var _response = await http.get(_url, headers: _header);
-    var _data = jsonDecode(_response.body);
-    print(_data);
-    return _data[0]['data'];
-  }
-
-  getRecovered(TokenModel token) async {
-    var _accessToken = token.accessToken;
-    var _url = '$_baseUrl/t/nubentos.com/ncovapi/2.0.0/recovered';
-    var _header = {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $_accessToken'};
-    var _response = await http.get(_url, headers: _header);
-    var _data = jsonDecode(_response.body);
-    return _data[0]['data'];
-  }
-
-  getDeaths(TokenModel token) async {
-    var _accessToken = token.accessToken;
-    var _url = '$_baseUrl/t/nubentos.com/ncovapi/2.0.0/deaths';
-    var _header = {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: 'Bearer $_accessToken'};
-    var _response = await http.get(_url, headers: _header);
-    var _data = jsonDecode(_response.body);
-    return _data[0]['data'];
-  } */
-  
 }
