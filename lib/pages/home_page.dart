@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,22 @@ class _HomePageState extends State<HomePage> {
   AppWidget _appWidget = AppWidget();
   DrawerWidget _drawerWidget = DrawerWidget();
 
+  void checkConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      _appProvider.getUserData();
+      _appProvider.getCoronaData();
+    } else {
+      // TODO CREATE SHOW DIALOG
+      _appProvider.setOffline();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _appProvider.getUserInfo();
-    _appProvider.getCoronaData();
+    checkConnection();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
@@ -79,26 +91,28 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         key: _scaffoldKey,
         endDrawer: _drawerWidget.createDrawer(context),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(20.0, 35.0, 20.0, 35.0),
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: () async {
-              _appProvider.getUserInfo();
-              _appProvider.getCoronaData();
-            },
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(20.0),
+            child: RefreshIndicator(
+              key: _refreshIndicatorKey,
+              onRefresh: () async {
+                _appProvider.getUserData();
+                _appProvider.getCoronaData();
+                if (!_appProvider.isOnline) _appProvider.setOffline();
+              },
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
                           tooltip: 'Show main menu',
                           icon: Image.asset(
                             'images/menu_button.png',
@@ -107,37 +121,39 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             _openEndDrawer();
-                          }),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  _photoProfile,
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  _greetingText,
-                  _adviceText,
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 5.0),
-                        child: _updateText,
-                      ),
-                    ],
-                  ),
-                  _appWidget.createCard([102, 187, 106], 'Positif',
-                      _appProvider.getCases, 'positive_icon.png'),
-                  _appWidget.createCard([239, 83, 80], 'Sembuh',
-                      _appProvider.getRecovered, 'health_icon.png'),
-                  _appWidget.createCard([189, 74, 75], 'Meninggal',
-                      _appProvider.getDeaths, 'death_icon.png'),
-                ],
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _photoProfile,
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _greetingText,
+                    _adviceText,
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: _updateText,
+                        ),
+                      ],
+                    ),
+                    _appWidget.createCard([102, 187, 106], 'Positif',
+                        _appProvider.getCases, 'positive_icon.png'),
+                    _appWidget.createCard([239, 83, 80], 'Sembuh',
+                        _appProvider.getRecovered, 'health_icon.png'),
+                    _appWidget.createCard([189, 74, 75], 'Meninggal',
+                        _appProvider.getDeaths, 'death_icon.png'),
+                  ],
+                ),
               ),
             ),
           ),
