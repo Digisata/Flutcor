@@ -1,8 +1,10 @@
 import 'package:flutcor/services/services.dart';
+import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget {
   FirebaseAuths _firebaseAuths = FirebaseAuths();
+  AppWidget _appWidget = AppWidget();
 
   Widget createDrawer(BuildContext context) {
     return Drawer(
@@ -59,9 +61,13 @@ class DrawerWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _firebaseAuths.signOut().then(
-                          (value) => Navigator.pushNamed(context, '/'),
-                        );
+                    _appWidget.showAlertDialog(
+                      context,
+                      'We will miss you!',
+                      'Are you sure want to logout?',
+                      'images/sad_emot.png',
+                      true,
+                    );
                   },
                   child: createMenuList('Logout'),
                 ),

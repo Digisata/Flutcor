@@ -1,16 +1,36 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutcor/sharedpreferences/sharedpreferences.dart';
 import 'package:flutcor/repositories/repositories.dart';
 import 'package:flutcor/services/services.dart';
+import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class AppProvider extends ChangeNotifier {
   FirebaseAuths _firebaseAuths = FirebaseAuths();
   CoronaRepository _coronaRepository = CoronaRepository();
   AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
+  AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
   int _cases = 0, _recovered = 0, _deaths = 0;
   bool _isLoading = true, _isOnline = true;
   List<dynamic> _localData = [];
+
+  void checkConnection(BuildContext context) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      getUserData();
+      getCoronaData();
+    } else {
+      setOffline();
+      _appWidget.showAlertDialog(
+        context,
+        'Ooops!',
+        'You are offline, please check your internet connection,....',
+        'images/confused_emot.png',
+      );
+    }
+  }
 
   void getUserData() async {
     _firebaseAuths.getCurrentUser().then(

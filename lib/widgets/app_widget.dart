@@ -1,4 +1,5 @@
 import 'package:flutcor/providers/providers.dart';
+import 'package:flutcor/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,8 +74,12 @@ class AppWidget {
     );
   }
 
-  Future<Widget> showMyDialog(BuildContext context, String title,
-      String message, String textButton) async {
+  Future<Widget> showAlertDialog(
+      BuildContext context, String title, String message, String image,
+      [bool isLogout]) async {
+    FirebaseAuths _firebaseAuths = FirebaseAuths();
+    bool _isLogout = isLogout ?? false;
+
     return showDialog<Widget>(
       context: context,
       barrierDismissible: false,
@@ -102,7 +107,7 @@ class AppWidget {
                   ),
                   child: Center(
                     child: Image.asset(
-                      'images/positive_icon.png',
+                      image,
                       height: 130.0,
                       width: 130.0,
                     ),
@@ -159,36 +164,94 @@ class AppWidget {
                       SizedBox(
                         height: 10.0,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                      _isLogout
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  color: Color.fromRGBO(154, 155, 159, 100),
+                                  padding:
+                                      EdgeInsets.fromLTRB(50.0, 5.0, 50.0, 5.0),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'No',
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Padauk',
+                                      fontSize: 25.0,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  color: Color.fromRGBO(51, 106, 255, 100),
+                                  padding:
+                                      EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
+                                  onPressed: () {
+                                    _firebaseAuths.signOut().then(
+                                          (value) =>
+                                              Navigator.pushReplacementNamed(
+                                                  context, '/'),
+                                        );
+                                  },
+                                  child: Text(
+                                    'Yes',
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Padauk',
+                                      fontSize: 25.0,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                RaisedButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  color: Color.fromRGBO(51, 106, 255, 100),
+                                  padding:
+                                      EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Understand',
+                                    textDirection: TextDirection.ltr,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Padauk',
+                                      fontSize: 25.0,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            color: Color.fromRGBO(51, 106, 255, 100),
-                            padding:
-                                EdgeInsets.fromLTRB(50.0, 5.0, 50.0, 5.0),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              textButton,
-                              textDirection: TextDirection.ltr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Padauk',
-                                fontSize: 25.0,
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
