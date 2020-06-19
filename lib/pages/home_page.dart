@@ -14,26 +14,12 @@ class _HomePageState extends State<HomePage> {
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  AppProvider _appProvider = AppProvider();
   AppWidget _appWidget = AppWidget();
   DrawerWidget _drawerWidget = DrawerWidget();
-
-  void checkConnection() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      _appProvider.getUserData();
-      _appProvider.getCoronaData();
-    } else {
-      // TODO CREATE SHOW DIALOG
-      _appProvider.setOffline();
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    checkConnection();
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
   }
@@ -44,10 +30,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _appProvider = Provider.of<AppProvider>(context);
+    final _appProvider = Provider.of<AppProvider>(context, listen: false);
+
+    void _checkConnection() async {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        _appProvider.getUserData();
+        _appProvider.getCoronaData();
+      } else {
+        _appProvider.setOffline();
+        _appWidget.showMyDialog(
+          context,
+          'Ooops!',
+          'You are offline, please check your internet connection,....',
+          'Understand',
+        );
+      }
+    }
 
     final _photoProfile = Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider value, Widget child) {
+      builder: (_, AppProvider value, __) {
         return CircleAvatar(
           backgroundImage: NetworkImage(value.getPhotoUrl),
           radius: 60.0,
@@ -56,11 +59,12 @@ class _HomePageState extends State<HomePage> {
     );
 
     final _greetingText = Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider value, Widget child) {
+      builder: (_, AppProvider value, __) {
         return Text(
           'Hi, ${value.getUsername}',
           textDirection: TextDirection.ltr,
           style: TextStyle(
+              fontFamily: 'Padauk',
               fontSize: 25.0,
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.normal,
@@ -73,13 +77,18 @@ class _HomePageState extends State<HomePage> {
       'Stay at home, and stay safe',
       textDirection: TextDirection.ltr,
       style: TextStyle(
-          fontSize: 20.0, fontStyle: FontStyle.normal, color: Colors.grey),
+        fontFamily: 'Padauk',
+        fontSize: 20.0,
+        fontStyle: FontStyle.normal,
+        color: Colors.grey,
+      ),
     );
 
     final _updateText = Text(
       'Update',
       textDirection: TextDirection.ltr,
       style: TextStyle(
+          fontFamily: 'Padauk',
           fontSize: 25.0,
           fontWeight: FontWeight.bold,
           fontStyle: FontStyle.normal,
@@ -97,9 +106,7 @@ class _HomePageState extends State<HomePage> {
             child: RefreshIndicator(
               key: _refreshIndicatorKey,
               onRefresh: () async {
-                _appProvider.getUserData();
-                _appProvider.getCoronaData();
-                if (!_appProvider.isOnline) _appProvider.setOffline();
+                _checkConnection();
               },
               child: Container(
                 child: Column(
@@ -146,12 +153,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    _appWidget.createCard([102, 187, 106], 'Positif',
-                        _appProvider.getCases, 'positive_icon.png'),
-                    _appWidget.createCard([239, 83, 80], 'Sembuh',
-                        _appProvider.getRecovered, 'health_icon.png'),
-                    _appWidget.createCard([189, 74, 75], 'Meninggal',
-                        _appProvider.getDeaths, 'death_icon.png'),
+                    _appWidget.createCard(
+                        [102, 187, 106], 'Positive', 'positive_icon.png'),
+                    _appWidget.createCard(
+                        [239, 83, 80], 'Recovered', 'health_icon.png'),
+                    _appWidget
+                        .createCard([189, 74, 75], 'Death', 'death_icon.png'),
                   ],
                 ),
               ),

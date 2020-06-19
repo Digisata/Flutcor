@@ -40,9 +40,6 @@ class DrawerWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 50,
-            ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
@@ -69,9 +66,6 @@ class DrawerWidget {
                   child: createMenuList('Logout'),
                 ),
               ],
-            ),
-            SizedBox(
-              height: 50,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
