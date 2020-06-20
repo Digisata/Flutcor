@@ -11,19 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextStyle textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  AppWidget _appWidget = AppWidget();
-  DrawerWidget _drawerWidget = DrawerWidget();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
-  }
+  final AppWidget _appWidget = AppWidget();
+  final DrawerWidget _drawerWidget = DrawerWidget();
 
   void _openEndDrawer() {
     _scaffoldKey.currentState.openEndDrawer();
@@ -49,13 +39,7 @@ class _HomePageState extends State<HomePage> {
         return Text(
           'Hi, ${value.getUsername}',
           textDirection: TextDirection.ltr,
-          style: TextStyle(
-            fontFamily: 'Padauk',
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
-            fontStyle: FontStyle.normal,
-            color: Colors.black,
-          ),
+          style: Theme.of(context).textTheme.headline1,
         );
       },
     );
@@ -63,24 +47,13 @@ class _HomePageState extends State<HomePage> {
     final _adviceText = Text(
       'Stay at home, and stay safe',
       textDirection: TextDirection.ltr,
-      style: TextStyle(
-        fontFamily: 'Padauk',
-        fontSize: 20.0,
-        fontStyle: FontStyle.normal,
-        color: Colors.grey,
-      ),
+      style: Theme.of(context).textTheme.headline2,
     );
 
     final _updateText = Text(
       'Update',
       textDirection: TextDirection.ltr,
-      style: TextStyle(
-        fontFamily: 'Padauk',
-        fontSize: 25.0,
-        fontWeight: FontWeight.bold,
-        fontStyle: FontStyle.normal,
-        color: Colors.black,
-      ),
+      style: Theme.of(context).textTheme.headline4,
     );
 
     return WillPopScope(
@@ -91,86 +64,75 @@ class _HomePageState extends State<HomePage> {
         body: OfflineBuilder(
           connectivityBuilder:
               (BuildContext context, ConnectivityResult value, Widget child) {
-            final bool connected = value != ConnectivityResult.none;
             _appProvider.checkConnection(context);
-            return connected
-                ? SafeArea(
-                    child: SingleChildScrollView(
-                      padding: EdgeInsets.all(20.0),
-                      child: RefreshIndicator(
-                        key: _refreshIndicatorKey,
-                        onRefresh: () async {
-                          _appProvider.checkConnection(context);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                IconButton(
-                                  tooltip: 'Refresh main page',
-                                  icon: Image.asset(
-                                    'images/refresh_button.png',
-                                    height: 27.0,
-                                    width: 27.0,
-                                  ),
-                                  onPressed: () {
-                                    _refreshIndicatorKey.currentState.show();
-                                  },
-                                ),
-                                IconButton(
-                                  tooltip: 'Show main menu',
-                                  icon: Image.asset(
-                                    'images/menu_button.png',
-                                    height: 25.0,
-                                    width: 25.0,
-                                  ),
-                                  onPressed: () {
-                                    _openEndDrawer();
-                                  },
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            _photoProfile,
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            _greetingText,
-                            _adviceText,
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(left: 5.0),
-                                  child: _updateText,
-                                ),
-                              ],
-                            ),
-                            _appWidget.createCard([102, 187, 106], 'Positive',
-                                'positive_icon.png'),
-                            _appWidget.createCard(
-                                [239, 83, 80], 'Recovered', 'health_icon.png'),
-                            _appWidget.createCard(
-                                [189, 74, 75], 'Death', 'death_icon.png'),
-                          ],
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          tooltip: 'Refresh main menu',
+                          icon: Image.asset(
+                            'images/refresh_button.png',
+                            height: 27.0,
+                            width: 27.0,
+                          ),
+                          onPressed: () {
+                            _appProvider.checkConnection(context, true);
+                          },
                         ),
-                      ),
+                        IconButton(
+                          tooltip: 'Show main menu',
+                          icon: Image.asset(
+                            'images/menu_button.png',
+                            height: 25.0,
+                            width: 25.0,
+                          ),
+                          onPressed: () {
+                            _openEndDrawer();
+                          },
+                        ),
+                      ],
                     ),
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
-                  );
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _photoProfile,
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _greetingText,
+                    _adviceText,
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: _updateText,
+                        ),
+                      ],
+                    ),
+                    _appWidget.createCard(context, [102, 187, 106], 'Positive',
+                        'positive_icon.png'),
+                    _appWidget.createCard(
+                        context, [239, 83, 80], 'Recovered', 'health_icon.png'),
+                    _appWidget.createCard(
+                        context, [189, 74, 75], 'Death', 'death_icon.png'),
+                  ],
+                ),
+              ),
+            );
           },
           child: Container(),
         ),

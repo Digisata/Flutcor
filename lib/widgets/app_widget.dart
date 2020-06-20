@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppWidget {
-  Widget createCard(List<int> color, String title, String icon) {
+  Widget createCard(
+      BuildContext context, List<int> color, String title, String icon) {
     return Container(
       margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
       height: 100,
@@ -26,12 +27,7 @@ class AppWidget {
                   Text(
                     title,
                     textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                        fontFamily: 'Padauk',
-                        fontSize: 20.0,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                   Consumer<AppProvider>(
                     builder: (_, AppProvider value, __) {
@@ -51,12 +47,10 @@ class AppWidget {
                       return Text(
                         '$data',
                         textDirection: TextDirection.ltr,
-                        style: TextStyle(
-                            fontFamily: 'Padauk',
-                            fontSize: 25.0,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            .copyWith(fontSize: 25.0),
                       );
                     },
                   ),
@@ -76,7 +70,7 @@ class AppWidget {
 
   Future<Widget> showAlertDialog(
       BuildContext context, String title, String message, String image,
-      [bool isLogout]) async {
+      [String textBtn, bool isLogout]) async {
     FirebaseAuths _firebaseAuths = FirebaseAuths();
     bool _isLogout = isLogout ?? false;
 
@@ -137,13 +131,7 @@ class AppWidget {
                           title,
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Padauk',
-                            fontSize: 25.0,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.headline4,
                         ),
                       ),
                       Flexible(
@@ -152,13 +140,10 @@ class AppWidget {
                           message,
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Padauk',
-                            fontSize: 20.0,
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4
+                              .copyWith(fontSize: 20.0),
                         ),
                       ),
                       SizedBox(
@@ -184,13 +169,10 @@ class AppWidget {
                                     'No',
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Padauk',
-                                      fontSize: 25.0,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ),
                                 RaisedButton(
@@ -211,13 +193,10 @@ class AppWidget {
                                     'Yes',
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Padauk',
-                                      fontSize: 25.0,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ),
                               ],
@@ -238,16 +217,13 @@ class AppWidget {
                                     Navigator.pop(context);
                                   },
                                   child: Text(
-                                    'Understand',
+                                    textBtn,
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Padauk',
-                                      fontSize: 25.0,
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4
+                                        .copyWith(color: Colors.white),
                                   ),
                                 ),
                               ],

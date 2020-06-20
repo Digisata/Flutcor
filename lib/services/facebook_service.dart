@@ -6,26 +6,24 @@ class FacebookAuths {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<FirebaseUser> signInWithFacebook() async {
-    final facebookLoginResult = await _facebookLogin.logIn(['email']);
-    final token = facebookLoginResult.accessToken.token;
+    final _facebookLoginResult = await _facebookLogin.logIn(['email']);
+    final _token = _facebookLoginResult.accessToken.token;
 
-    switch (facebookLoginResult.status) {
+    switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.error:
-        print("Error");
+        print("Facebook login error");
         // onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.cancelledByUser:
-        print("CancelledByUser");
+        print("Facebook login cancelled by user");
         // onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
         final AuthCredential credential =
-            FacebookAuthProvider.getCredential(accessToken: token);
-        final FirebaseUser user = ( await _firebaseAuth.signInWithCredential(credential)).user;
-        print(user.displayName);
+            FacebookAuthProvider.getCredential(accessToken: _token);
+        final FirebaseUser user = (await _firebaseAuth.signInWithCredential(credential)).user;
+        print("Facebook Logged in");
         return user;
-        // print("LoggedIn");
-        // onLoginStatusChanged(true);
         break;
     }
   }

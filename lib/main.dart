@@ -24,8 +24,32 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutcor',
       theme: ThemeData(
-        primaryColor: Colors.blue[600],
         fontFamily: 'Padauk',
+        textTheme: TextTheme(
+          headline1: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.normal,
+            color: Colors.black,
+          ),
+          headline2: TextStyle(
+            fontSize: 20.0,
+            fontStyle: FontStyle.normal,
+            color: Colors.grey,
+          ),
+          headline3: TextStyle(
+            fontSize: 20.0,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          headline4: TextStyle(
+            color: Colors.black,
+            fontSize: 25.0,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

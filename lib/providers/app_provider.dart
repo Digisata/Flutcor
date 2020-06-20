@@ -11,24 +11,43 @@ class AppProvider extends ChangeNotifier {
   AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
   AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
-  int _cases = 0, _recovered = 0, _deaths = 0;
-  bool _isLoading = true, _isOnline = true;
+  int _cases = 0, _recovered = 0, _deaths = 0, _numIndicator = 1;
+  bool _isOnline = true;
   List<dynamic> _localData = [];
 
-  void checkConnection(BuildContext context) async {
+  void checkConnection(BuildContext context,
+      [bool isManualRefresh = false]) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       getUserData();
       getCoronaData();
+      _isOnline = true;
+      if (_numIndicator == 3) {
+        if (!isManualRefresh)
+          _appWidget.showAlertDialog(
+            context,
+            'Yeaay!',
+            'You are online, hope you enjoy the app,....',
+            'images/happy_emot.png',
+            'Ok',
+          );
+      } else {
+        _numIndicator++;
+      }
     } else {
       setOffline();
-      _appWidget.showAlertDialog(
-        context,
-        'Ooops!',
-        'You are offline, please check your internet connection,....',
-        'images/confused_emot.png',
-      );
+      if (_numIndicator == 3) {
+        _appWidget.showAlertDialog(
+          context,
+          'Ooops!',
+          'You are offline, the data may not up to date,....',
+          'images/confused_emot.png',
+          'Understand',
+        );
+      } else {
+        _numIndicator++;
+      }
     }
   }
 
@@ -37,7 +56,6 @@ class AppProvider extends ChangeNotifier {
       (value) async {
         _photoUrl = value.photoUrl.toString();
         _username = value.displayName.toString();
-        _isLoading = false;
         _appSharedPreferences.syncUserData(_photoUrl, _username);
         notifyListeners();
       },
@@ -54,7 +72,6 @@ class AppProvider extends ChangeNotifier {
         _cases = _casesData;
         _recovered = _recoveredData;
         _deaths = _deathsData;
-        _isLoading = false;
         _appSharedPreferences.syncCoronaData(_cases, _recovered, _deaths);
         notifyListeners();
       },
@@ -81,8 +98,6 @@ class AppProvider extends ChangeNotifier {
   int get getRecovered => this._recovered;
 
   int get getDeaths => this._deaths;
-
-  bool get isLoading => this._isLoading;
 
   bool get isOnline => this._isOnline;
 }

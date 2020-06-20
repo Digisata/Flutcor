@@ -1,9 +1,7 @@
-import 'package:flutcor/services/services.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget {
-  FirebaseAuths _firebaseAuths = FirebaseAuths();
   AppWidget _appWidget = AppWidget();
 
   Widget createDrawer(BuildContext context) {
@@ -24,11 +22,10 @@ class DrawerWidget {
                 Text(
                   'Menu',
                   textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .copyWith(fontSize: 30.0),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -47,15 +44,15 @@ class DrawerWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                createMenuList('About Us'),
+                createMenuList(context, 'About Us'),
                 SizedBox(
                   height: 10.0,
                 ),
-                createMenuList('More Apps'),
+                createMenuList(context, 'More Apps'),
                 SizedBox(
                   height: 10.0,
                 ),
-                createMenuList('Contact Us'),
+                createMenuList(context, 'Contact Us'),
                 SizedBox(
                   height: 10.0,
                 ),
@@ -66,10 +63,11 @@ class DrawerWidget {
                       'We will miss you!',
                       'Are you sure want to logout?',
                       'images/sad_emot.png',
+                      '',
                       true,
                     );
                   },
-                  child: createMenuList('Logout'),
+                  child: createMenuList(context, 'Logout'),
                 ),
               ],
             ),
@@ -80,11 +78,10 @@ class DrawerWidget {
               children: <Widget>[
                 Text(
                   'Version 1.0.0',
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.white),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .copyWith(fontSize: 15.0),
                 ),
               ],
             )
@@ -94,15 +91,11 @@ class DrawerWidget {
     );
   }
 
-  Widget createMenuList(String text) {
+  Widget createMenuList(BuildContext context, String text) {
     return Text(
       text,
       textDirection: TextDirection.ltr,
-      style: TextStyle(
-          fontSize: 35.0,
-          fontWeight: FontWeight.bold,
-          fontStyle: FontStyle.normal,
-          color: Colors.white),
+      style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 35.0),
     );
   }
 }

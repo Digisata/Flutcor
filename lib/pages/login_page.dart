@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutcor/services/services.dart';
 
 class LoginPage extends StatelessWidget {
-  TextStyle _textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  GoogleAuths _googleAuth = GoogleAuths();
-  FacebookAuths _facebookAuth = FacebookAuths();
+  final TextStyle _textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final GoogleAuths _googleAuth = GoogleAuths();
+  final FacebookAuths _facebookAuth = FacebookAuths();
 
   @override
   Widget build(BuildContext context) {
