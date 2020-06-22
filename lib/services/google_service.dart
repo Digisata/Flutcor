@@ -17,7 +17,6 @@ class GoogleAuths {
 
     final FirebaseUser user =
         (await _firebaseAuth.signInWithCredential(credential)).user;
-    print('signed in: ' + user.displayName);
     return user;
   }
 }
