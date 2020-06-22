@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           _googleAuth.signInWithGoogle().then(
-                (value) => Navigator.pushNamed(context, '/home_page'),
+                (value) => Navigator.pushReplacementNamed(context, '/homePage'),
               );
         },
         child: 
@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           _facebookAuth.signInWithFacebook().then(
-                (value) => Navigator.pushNamed(context, '/home_page'),
+                (value) => Navigator.pushReplacementNamed(context, '/homePage'),
               );
         },
         child: 
