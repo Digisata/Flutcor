@@ -5,18 +5,27 @@ class GoogleAuths {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<FirebaseUser> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+  signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
+      assert(_googleUser != null);
+      final GoogleSignInAuthentication _googleAuth =
+          await _googleUser.authentication;
+      assert(_googleAuth != null);
+      final AuthCredential _credential = GoogleAuthProvider.getCredential(
+        idToken: _googleAuth.idToken,
+        accessToken: _googleAuth.accessToken,
+      );
+      assert(_credential != null);
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      idToken: googleAuth.idToken,
-      accessToken: googleAuth.accessToken,
-    );
-
-    final FirebaseUser user =
-        (await _firebaseAuth.signInWithCredential(credential)).user;
-    return user;
+      final FirebaseUser _user =
+          (await _firebaseAuth.signInWithCredential(_credential)).user;
+      assert(_user.displayName != null);
+      assert(_user.photoUrl != null);
+      assert(!_user.isAnonymous);
+      return _user;
+    } catch (error) {
+      print('catch error: $error');
+    }
   }
 }

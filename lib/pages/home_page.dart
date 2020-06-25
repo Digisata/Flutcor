@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                             width: 27.0,
                           ),
                           onPressed: () {
-                            _appProvider.checkConnection(context, true);
+                            _appProvider.checkConnection(context);
                           },
                         ),
                         IconButton(

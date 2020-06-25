@@ -11,43 +11,26 @@ class AppProvider extends ChangeNotifier {
   AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
   AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
-  int _cases = 0, _recovered = 0, _deaths = 0, _numIndicator = 1;
+  int _cases = 0, _recovered = 0, _deaths = 0;
   bool _isOnline = true;
   List<dynamic> _localData = [];
 
-  void checkConnection(BuildContext context,
-      [bool isManualRefresh = false]) async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
+  void checkConnection(BuildContext context) async {
+    var _connectivityResult = await (Connectivity().checkConnectivity());
+    if (_connectivityResult == ConnectivityResult.mobile ||
+        _connectivityResult == ConnectivityResult.wifi) {
       getUserData();
       getCoronaData();
       _isOnline = true;
-      if (_numIndicator == 3) {
-        if (!isManualRefresh)
-          _appWidget.showAlertDialog(
-            context,
-            'Yeaay!',
-            'You are online, hope you enjoy the app,....',
-            'images/happy_emot.png',
-            'Ok',
-          );
-      } else {
-        _numIndicator++;
-      }
     } else {
       setOffline();
-      if (_numIndicator == 3) {
-        _appWidget.showAlertDialog(
-          context,
-          'Ooops!',
-          'You are offline, the data may not up to date,....',
-          'images/confused_emot.png',
-          'Understand',
-        );
-      } else {
-        _numIndicator++;
-      }
+      _appWidget.showAlertDialog(
+        context,
+        'Ooops!',
+        'You are offline, the data may not up to date,....',
+        'images/confused_emot.png',
+        'Understand',
+      );
     }
   }
 

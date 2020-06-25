@@ -20,16 +20,25 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: 350.0,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          _googleAuth.signInWithGoogle().then(
+          _googleAuth
+              .signInWithGoogle()
+              .then(
                 (value) => Navigator.pushReplacementNamed(context, '/homePage'),
+              )
+              .catchError(
+                (error) => print('google sign in error: $error'),
               );
         },
-        child: 
-        Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("images/google_logo.png", width: 35.0, height: 35.0,alignment: Alignment.bottomLeft,),
+            Image.asset(
+              "images/google_logo.png",
+              width: 35.0,
+              height: 35.0,
+              alignment: Alignment.bottomLeft,
+            ),
             Text(
               '   Sign in with Google',
               textDirection: TextDirection.ltr,
@@ -50,16 +59,25 @@ class _LoginPageState extends State<LoginPage> {
         minWidth: 350.0,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          _facebookAuth.signInWithFacebook().then(
+          _facebookAuth
+              .signInWithFacebook()
+              .then(
                 (value) => Navigator.pushReplacementNamed(context, '/homePage'),
+              )
+              .catchError(
+                (error) => print('facebook sign in error: $error'),
               );
         },
-        child: 
-        Row(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("images/facebook_logo.png", width: 35.0, height: 35.0,alignment: Alignment.bottomLeft,),
+            Image.asset(
+              "images/facebook_logo.png",
+              width: 35.0,
+              height: 35.0,
+              alignment: Alignment.bottomLeft,
+            ),
             Text(
               '   Sign in with Facebook',
               textDirection: TextDirection.ltr,
@@ -72,36 +90,39 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                  child: Image.asset('images/logo.png',
-                      height: 200.0, width: 200.0)),
-              Text(
-                "Flutcor",
-                style: TextStyle(
-                  fontFamily: "Caviar Dreams",
-                  fontSize: 72,
-                ),
-              ),
-              Text(
-                "Covid-19 Monitoring App Using Flutter Framework",
-                style: TextStyle(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Center(
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                    child: Image.asset('images/logo.png',
+                        height: 200.0, width: 200.0)),
+                Text(
+                  "Flutcor",
+                  style: TextStyle(
                     fontFamily: "Caviar Dreams",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600),
-              ),
-              SizedBox(height: 45.0),
-              signInWithGoogle,
-              SizedBox(height: 15.0),
-              signInWithFacebook,
-              SizedBox(height: 15.0),
-            ],
+                    fontSize: 72,
+                  ),
+                ),
+                Text(
+                  "Covid-19 Monitoring App Using Flutter Framework",
+                  style: TextStyle(
+                      fontFamily: "Caviar Dreams",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: 45.0),
+                signInWithGoogle,
+                SizedBox(height: 15.0),
+                signInWithFacebook,
+                SizedBox(height: 15.0),
+              ],
+            ),
           ),
         ),
       ),
