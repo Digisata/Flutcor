@@ -183,17 +183,13 @@ class AppWidget {
                                   padding:
                                       EdgeInsets.fromLTRB(40.0, 5.0, 40.0, 5.0),
                                   onPressed: () {
-                                    _firebaseAuths
-                                        .signOut()
-                                        .then(
-                                          (value) =>
-                                              Navigator.pushReplacementNamed(
-                                                  context, '/'),
-                                        )
-                                        .catchError(
-                                          (error) =>
-                                              print('logout error: $error'),
-                                        );
+                                    try {
+                                      _firebaseAuths.signOut();
+                                      Navigator.pushReplacementNamed(
+                                          context, '/');
+                                    } catch (error) {
+                                      throw 'sign out error: $error';
+                                    }
                                   },
                                   child: Text(
                                     'Yes',

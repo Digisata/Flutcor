@@ -44,11 +44,10 @@ class FirebaseAuths implements BaseAuth {
       if (!await _googleSignIn.isSignedIn()) {
         await _facebookLogin.logOut();
       } else {
-        await _googleSignIn.signOut();
         await _googleSignIn.disconnect();
       }
     } catch (error) {
-      print('catch error: $error');
+      throw 'catch error: $error';
     }
   }
 

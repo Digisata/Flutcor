@@ -13,16 +13,17 @@ class FacebookAuths {
 
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.error:
-        print("Facebook login error");
+        throw "Facebook login error";
         // onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.cancelledByUser:
-        print("Facebook login cancelled by user");
+        throw "Facebook login cancelled by user";
         // onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
-        final AuthCredential _credential =
-            FacebookAuthProvider.getCredential(accessToken: _accessToken, );
+        final AuthCredential _credential = FacebookAuthProvider.getCredential(
+          accessToken: _accessToken,
+        );
         final FirebaseUser _user =
             (await _firebaseAuth.signInWithCredential(_credential)).user;
         assert(_user.displayName != null);

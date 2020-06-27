@@ -23,9 +23,10 @@ class GoogleAuths {
       assert(_user.displayName != null);
       assert(_user.photoUrl != null);
       assert(!_user.isAnonymous);
+      assert(await _user.getIdToken() != null);
       return _user;
     } catch (error) {
-      print('catch error: $error');
+      throw 'catch error: $error';
     }
   }
 }

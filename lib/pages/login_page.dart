@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutcor/services/services.dart';
 
@@ -19,15 +20,13 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.grey,
         minWidth: 350.0,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          _googleAuth
-              .signInWithGoogle()
-              .then(
-                (value) => Navigator.pushReplacementNamed(context, '/homePage'),
-              )
-              .catchError(
-                (error) => print('google sign in error: $error'),
-              );
+        onPressed: () async {
+          try {
+            await _googleAuth.signInWithGoogle();
+            Navigator.pushReplacementNamed(context, '/homePage');
+          } catch (error) {
+            throw 'google sign in error: $error';
+          }
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,15 +57,13 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.blue,
         minWidth: 350.0,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          _facebookAuth
-              .signInWithFacebook()
-              .then(
-                (value) => Navigator.pushReplacementNamed(context, '/homePage'),
-              )
-              .catchError(
-                (error) => print('facebook sign in error: $error'),
-              );
+        onPressed: () async {
+          try {
+            await _facebookAuth.signInWithFacebook();
+            Navigator.pushReplacementNamed(context, '/homePage');
+          } catch (error) {
+            throw 'facebook sign in error: $error';
+          }
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

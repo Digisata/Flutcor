@@ -1,4 +1,6 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutcor/models/models.dart';
 import 'package:flutcor/sharedpreferences/sharedpreferences.dart';
 import 'package:flutcor/repositories/repositories.dart';
 import 'package:flutcor/services/services.dart';
@@ -35,30 +37,31 @@ class AppProvider extends ChangeNotifier {
   }
 
   void getUserData() async {
-    _firebaseAuths.getCurrentUser().then(
-      (value) async {
-        _photoUrl = value.photoUrl.toString();
-        _username = value.displayName.toString();
-        _appSharedPreferences.syncUserData(_photoUrl, _username);
-        notifyListeners();
-      },
-    );
+    try {
+      FirebaseUser _user = await _firebaseAuths.getCurrentUser();
+      _photoUrl = _user.photoUrl.toString();
+      _username = _user.displayName.toString();
+      _appSharedPreferences.syncUserData(_photoUrl, _username);
+      notifyListeners();
+    } catch (error) {
+      throw 'get user data error: $error';
+    }
   }
 
   void getCoronaData() async {
-    _coronaRepository.getToken().then(
-      (value) async {
-        var _casesData = await _coronaRepository.getData(value, 'cases');
-        var _recoveredData =
-            await _coronaRepository.getData(value, 'recovered');
-        var _deathsData = await _coronaRepository.getData(value, 'deaths');
-        _cases = _casesData;
-        _recovered = _recoveredData;
-        _deaths = _deathsData;
-        _appSharedPreferences.syncCoronaData(_cases, _recovered, _deaths);
-        notifyListeners();
-      },
-    );
+    try {
+      TokenModel _token = await _coronaRepository.getToken();
+      var _casesData = await _coronaRepository.getData(_token, 'cases');
+      var _recoveredData = await _coronaRepository.getData(_token, 'recovered');
+      var _deathsData = await _coronaRepository.getData(_token, 'deaths');
+      _cases = _casesData;
+      _recovered = _recoveredData;
+      _deaths = _deathsData;
+      _appSharedPreferences.syncCoronaData(_cases, _recovered, _deaths);
+      notifyListeners();
+    } catch (error) {
+      throw 'get corona data error: $error';
+    }
   }
 
   void setOffline() async {
@@ -72,15 +75,15 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get getPhotoUrl => this._photoUrl;
+  String get getPhotoUrl => _photoUrl;
 
-  String get getUsername => this._username;
+  String get getUsername => _username;
 
-  int get getCases => this._cases;
+  int get getCases => _cases;
 
-  int get getRecovered => this._recovered;
+  int get getRecovered => _recovered;
 
-  int get getDeaths => this._deaths;
+  int get getDeaths => _deaths;
 
-  bool get isOnline => this._isOnline;
+  bool get isOnline => _isOnline;
 }
