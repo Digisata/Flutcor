@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutcor/providers/providers.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleAuths {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final AppProvider _appProvider = AppProvider();
 
   signInWithGoogle() async {
     try {
@@ -26,7 +24,6 @@ class GoogleAuths {
       assert(_user.photoUrl != null);
       assert(!_user.isAnonymous);
       assert(await _user.getIdToken() != null);
-      _appProvider.isLoggedIn = true;
       return _user;
     } catch (error) {
       throw 'catch error: $error';

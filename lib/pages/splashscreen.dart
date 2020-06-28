@@ -1,4 +1,4 @@
-import 'package:flutcor/providers/providers.dart';
+import 'package:flutcor/services/services.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -7,10 +7,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final AppProvider _appProvider = AppProvider();
+  final FirebaseAuths _firebaseAuths = FirebaseAuths();
 
-  checkLoginStatus() {
-    if (!_appProvider.isLoggedIn) {
+  checkLoginStatus() async {
+    if (await _firebaseAuths.getCurrentUser() == null) {
       Navigator.pushReplacementNamed(context, '/loginPage');
     } else {
       Navigator.pushReplacementNamed(context, '/homePage');
@@ -25,8 +25,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(),
+    return Container(
+      color: Colors.white,
+      child: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

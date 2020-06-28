@@ -14,7 +14,7 @@ class AppProvider extends ChangeNotifier {
   AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
   int _cases = 0, _recovered = 0, _deaths = 0;
-  bool _isOnline = true, _isLoggedIn = false;
+  bool _isOnline = true;
   List<dynamic> _localData = [];
 
   void checkConnection(BuildContext context) async {
@@ -75,10 +75,6 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set isLoggedIn(bool isLoggedIn) {
-    this._isLoggedIn = isLoggedIn;
-  }
-
   String get getPhotoUrl => _photoUrl;
 
   String get getUsername => _username;
@@ -90,6 +86,4 @@ class AppProvider extends ChangeNotifier {
   int get getDeaths => _deaths;
 
   bool get isOnline => _isOnline;
-
-  bool get isLoggedIn => _isLoggedIn;
 }

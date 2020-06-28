@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
-        '/': (context) => LoginPage(),
+        '/': (context) => SplashScreen(),
+        '/loginPage': (context) => LoginPage(),
         '/homePage': (context) => HomePage(),
       },
       debugShowCheckedModeBanner: false,
