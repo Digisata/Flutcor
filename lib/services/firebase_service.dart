@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutcor/providers/providers.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,6 +16,7 @@ class FirebaseAuths implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
+  final AppProvider _appProvider = AppProvider();
 
   Future<String> signInWithEmailPassword(String email, String password) async {
     AuthResult _result = await _firebaseAuth.signInWithEmailAndPassword(
@@ -34,7 +36,6 @@ class FirebaseAuths implements BaseAuth {
 
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser _user = await _firebaseAuth.currentUser();
-    assert(_user != null);
     return _user;
   }
 
@@ -43,8 +44,10 @@ class FirebaseAuths implements BaseAuth {
       await _firebaseAuth.signOut();
       if (!await _googleSignIn.isSignedIn()) {
         await _facebookLogin.logOut();
+        _appProvider.isLoggedIn = false;
       } else {
         await _googleSignIn.disconnect();
+        _appProvider.isLoggedIn = false;
       }
     } catch (error) {
       throw 'catch error: $error';

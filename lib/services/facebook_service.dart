@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutcor/providers/providers.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class FacebookAuths {
   final FacebookLogin _facebookLogin = FacebookLogin();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final AppProvider _appProvider = AppProvider();
 
   signInWithFacebook() async {
     final _facebookLoginResult = await _facebookLogin.logIn(['email']);
@@ -29,6 +31,7 @@ class FacebookAuths {
         assert(_user.displayName != null);
         assert(_user.photoUrl != null);
         assert(!_user.isAnonymous);
+        _appProvider.isLoggedIn = true;
         return _user;
         break;
     }

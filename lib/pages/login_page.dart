@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutcor/services/services.dart';
 
@@ -8,9 +7,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextStyle _textStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  GoogleAuths _googleAuth = GoogleAuths();
-  FacebookAuths _facebookAuth = FacebookAuths();
+  final TextStyle _textStyle =
+      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final GoogleAuths _googleAuth = GoogleAuths();
+  final FacebookAuths _facebookAuth = FacebookAuths();
+
   @override
   Widget build(BuildContext context) {
     final signInWithGoogle = Material(

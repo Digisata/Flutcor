@@ -186,7 +186,7 @@ class AppWidget {
                                     try {
                                       _firebaseAuths.signOut();
                                       Navigator.pushReplacementNamed(
-                                          context, '/');
+                                          context, '/loginPage');
                                     } catch (error) {
                                       throw 'sign out error: $error';
                                     }
