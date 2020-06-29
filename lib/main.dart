@@ -1,6 +1,7 @@
 import 'package:flutcor/providers/providers.dart';
-import 'package:flutter/material.dart';
 import 'package:flutcor/pages/pages.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -10,6 +11,8 @@ void main() {
       child: MyApp(),
     ),
   );
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 }
 
 class MyApp extends StatelessWidget {
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => SplashScreen(),
         '/loginPage': (context) => LoginPage(),
         '/homePage': (context) => HomePage(),
+        '/detailPage': (context) => DetailPage(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutcor',

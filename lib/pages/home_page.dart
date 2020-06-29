@@ -1,17 +1,13 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   final AppWidget _appWidget = AppWidget();
   final DrawerWidget _drawerWidget = DrawerWidget();
 
@@ -61,14 +57,14 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         key: _scaffoldKey,
         endDrawer: _drawerWidget.createDrawer(context),
-        body: OfflineBuilder(
-          connectivityBuilder:
-              (BuildContext context, ConnectivityResult value, Widget child) {
-            _appProvider.checkConnection(context);
-            return SafeArea(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: OfflineBuilder(
+              connectivityBuilder: (BuildContext context,
+                  ConnectivityResult value, Widget child) {
+                _appProvider.checkConnection(context);
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,11 +126,13 @@ class _HomePageState extends State<HomePage> {
                     _appWidget.createCard(
                         context, [189, 74, 75], 'Death', 'death_icon.png'),
                   ],
-                ),
+                );
+              },
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-            );
-          },
-          child: Container(),
+            ),
+          ),
         ),
       ),
     );

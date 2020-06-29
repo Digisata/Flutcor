@@ -1,67 +1,75 @@
+import 'package:flutcor/helper/helpers.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppWidget {
+  final NumberHelper _numberHelper = NumberHelper();
+
   Widget createCard(
       BuildContext context, List<int> color, String title, String icon) {
-    return Container(
-      margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-      height: 100,
-      child: Card(
-        color: Color.fromRGBO(color[0], color[1], color[2], 100),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    textDirection: TextDirection.ltr,
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  Consumer<AppProvider>(
-                    builder: (_, AppProvider value, __) {
-                      int data = 0;
-                      switch (title) {
-                        case 'Positive':
-                          data = value.getCases;
-                          break;
-                        case 'Recovered':
-                          data = value.getRecovered;
-                          break;
-                        case 'Death':
-                          data = value.getDeaths;
-                          break;
-                        default:
-                      }
-                      return Text(
-                        '$data',
-                        textDirection: TextDirection.ltr,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            .copyWith(fontSize: 25.0),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              Image.asset(
-                'images/$icon',
-                height: 60.0,
-                width: 60.0,
-              ),
-            ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/detailPage', arguments: title);
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+        height: 100,
+        child: Card(
+          color: Color.fromRGBO(color[0], color[1], color[2], 100),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      textDirection: TextDirection.ltr,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Consumer<AppProvider>(
+                      builder: (_, AppProvider value, __) {
+                        int _data = 0;
+                        switch (title) {
+                          case 'Positive':
+                            _data = value.getCases;
+                            break;
+                          case 'Recovered':
+                            _data = value.getRecovered;
+                            break;
+                          case 'Death':
+                            _data = value.getDeaths;
+                            break;
+                          default:
+                        }
+                        return Text(
+                          '${_numberHelper.format(_data.toString())}',
+                          textDirection: TextDirection.ltr,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3
+                              .copyWith(fontSize: 25.0),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                Image.asset(
+                  'images/$icon',
+                  height: 60.0,
+                  width: 60.0,
+                ),
+              ],
+            ),
           ),
         ),
       ),
