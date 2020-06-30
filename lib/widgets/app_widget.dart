@@ -2,22 +2,23 @@ import 'package:flutcor/helper/helpers.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/line_scale_party_indicator.dart';
+import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 
 class AppWidget {
   final NumberHelper _numberHelper = NumberHelper();
 
-  Widget createCard(
-      BuildContext context, List<int> color, String title, String icon) {
+  Widget card(BuildContext context, Color color, String title, String icon) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/detailPage', arguments: title);
+        Navigator.pushNamed(context, '/detailPage', arguments: [title, color]);
       },
       child: Container(
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
         height: 100,
         child: Card(
-          color: Color.fromRGBO(color[0], color[1], color[2], 100),
+          color: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
           ),
@@ -40,25 +41,30 @@ class AppWidget {
                       builder: (_, AppProvider value, __) {
                         int _data = 0;
                         switch (title) {
-                          case 'Positive':
-                            _data = value.getCases;
+                          case 'Confirmed':
+                            _data = value.confirmed;
                             break;
                           case 'Recovered':
-                            _data = value.getRecovered;
+                            _data = value.recovered;
                             break;
-                          case 'Death':
-                            _data = value.getDeaths;
+                          case 'Deaths':
+                            _data = value.deaths;
                             break;
-                          default:
                         }
-                        return Text(
-                          '${_numberHelper.format(_data.toString())}',
-                          textDirection: TextDirection.ltr,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3
-                              .copyWith(fontSize: 25.0),
-                        );
+                        return value.isLoading
+                            ? Loading(
+                                indicator: LineScalePartyIndicator(),
+                                size: 10.0,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                '${_numberHelper.format(_data.toString())}',
+                                textDirection: TextDirection.ltr,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3
+                                    .copyWith(fontSize: 25.0),
+                              );
                       },
                     ),
                   ],

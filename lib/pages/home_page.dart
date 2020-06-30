@@ -1,3 +1,4 @@
+import 'package:flutcor/commons/commons.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,9 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
   final AppWidget _appWidget = AppWidget();
   final DrawerWidget _drawerWidget = DrawerWidget();
+  final ColorPalette _colorPalette = ColorPalette();
 
   void _openEndDrawer() {
     _scaffoldKey.currentState.openEndDrawer();
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
       builder: (_, AppProvider value, __) {
         return CircleAvatar(
           backgroundImage: NetworkImage(
-            value.getPhotoUrl,
+            value.photoUrl,
           ),
           radius: 60.0,
         );
@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
     final _greetingText = Consumer<AppProvider>(
       builder: (_, AppProvider value, __) {
         return Text(
-          'Hi, ${value.getUsername}',
+          'Hi, ${value.username}',
           textDirection: TextDirection.ltr,
           style: Theme.of(context).textTheme.headline1,
         );
@@ -46,8 +46,8 @@ class HomePage extends StatelessWidget {
       style: Theme.of(context).textTheme.headline2,
     );
 
-    final _updateText = Text(
-      'Update',
+    final _descriptionText = Text(
+      'World wide',
       textDirection: TextDirection.ltr,
       style: Theme.of(context).textTheme.headline4,
     );
@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         IconButton(
-                          tooltip: 'Refresh main menu',
+                          tooltip: 'Refresh home page',
                           icon: Image.asset(
                             'images/refresh_button.png',
                             height: 27.0,
@@ -114,17 +114,17 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: _updateText,
+                          padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                          child: _descriptionText,
                         ),
                       ],
                     ),
-                    _appWidget.createCard(context, [102, 187, 106], 'Positive',
-                        'positive_icon.png'),
-                    _appWidget.createCard(
-                        context, [239, 83, 80], 'Recovered', 'health_icon.png'),
-                    _appWidget.createCard(
-                        context, [189, 74, 75], 'Death', 'death_icon.png'),
+                    _appWidget.card(context, _colorPalette.green,
+                        'Confirmed', 'confirmed_icon.png'),
+                    _appWidget.card(context, _colorPalette.pink,
+                        'Recovered', 'recovered_icon.png'),
+                    _appWidget.card(
+                        context, _colorPalette.red, 'Deaths', 'death_icon.png'),
                   ],
                 );
               },

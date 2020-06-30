@@ -1,29 +1,36 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutcor/models/models.dart';
 import 'package:flutcor/sharedpreferences/sharedpreferences.dart';
 import 'package:flutcor/repositories/repositories.dart';
 import 'package:flutcor/services/services.dart';
 import 'package:flutcor/widgets/widgets.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AppProvider extends ChangeNotifier {
-  FirebaseAuths _firebaseAuths = FirebaseAuths();
-  CoronaRepository _coronaRepository = CoronaRepository();
-  AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
-  AppWidget _appWidget = AppWidget();
+  final FirebaseAuths _firebaseAuths = FirebaseAuths();
+  final CoronaRepository _coronaRepository = CoronaRepository();
+  final AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
+  final AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
-  int _cases = 0, _recovered = 0, _deaths = 0;
-  bool _isOnline = true;
+  int _confirmed = 0, _recovered = 0, _deaths = 0;
+  bool _isOnline = false, _isLoading = true;
+  DateTime _lastUpdate = DateTime.now();
+  List<DetailModel> _detailConfirmed = [],
+      _detailRecovered = [],
+      _detailDeaths = [];
   List<dynamic> _localData = [];
 
   void checkConnection(BuildContext context) async {
-    var _connectivityResult = await (Connectivity().checkConnectivity());
+    final _connectivityResult = await (Connectivity().checkConnectivity());
     if (_connectivityResult == ConnectivityResult.mobile ||
         _connectivityResult == ConnectivityResult.wifi) {
       getUserData();
-      getCoronaData();
+      getMainData();
+      getDetailData();
       _isOnline = true;
+      _isLoading = false;
+      notifyListeners();
     } else {
       setOffline();
       _appWidget.showAlertDialog(
@@ -38,7 +45,7 @@ class AppProvider extends ChangeNotifier {
 
   void getUserData() async {
     try {
-      FirebaseUser _user = await _firebaseAuths.getCurrentUser();
+      final FirebaseUser _user = await _firebaseAuths.getCurrentUser();
       _photoUrl = _user.photoUrl.toString();
       _username = _user.displayName.toString();
       _appSharedPreferences.syncUserData(_photoUrl, _username);
@@ -48,19 +55,31 @@ class AppProvider extends ChangeNotifier {
     }
   }
 
-  void getCoronaData() async {
+  void getMainData() async {
     try {
-      TokenModel _token = await _coronaRepository.getToken();
-      var _casesData = await _coronaRepository.getData(_token, 'cases');
-      var _recoveredData = await _coronaRepository.getData(_token, 'recovered');
-      var _deathsData = await _coronaRepository.getData(_token, 'deaths');
-      _cases = _casesData;
-      _recovered = _recoveredData;
-      _deaths = _deathsData;
-      _appSharedPreferences.syncCoronaData(_cases, _recovered, _deaths);
+      final CoronaModel _coronaModel = await _coronaRepository.getMainData();
+      _confirmed = _coronaModel.confirmed.value;
+      _recovered = _coronaModel.recovered.value;
+      _deaths = _coronaModel.deaths.value;
+      _lastUpdate = _coronaModel.lastUpdate;
+      _appSharedPreferences.syncCoronaData(_confirmed, _recovered, _deaths);
       notifyListeners();
     } catch (error) {
-      throw 'get corona data error: $error';
+      throw 'get main data error: $error';
+    }
+  }
+
+  void getDetailData() async {
+    try {
+      _detailConfirmed = await _coronaRepository
+          .getDetailData('https://covid19.mathdro.id/api/confirmed');
+      _detailRecovered = await _coronaRepository
+          .getDetailData('https://covid19.mathdro.id/api/recovered');
+      _detailDeaths = await _coronaRepository
+          .getDetailData('https://covid19.mathdro.id/api/deaths');
+      notifyListeners();
+    } catch (error) {
+      throw 'get detail data error: $error';
     }
   }
 
@@ -68,22 +87,32 @@ class AppProvider extends ChangeNotifier {
     _localData = await _appSharedPreferences.getLocalData();
     _photoUrl = _localData[0];
     _username = _localData[1];
-    _cases = _localData[2];
+    _confirmed = _localData[2];
     _recovered = _localData[3];
     _deaths = _localData[4];
     _isOnline = false;
     notifyListeners();
   }
 
-  String get getPhotoUrl => _photoUrl;
+  String get photoUrl => _photoUrl;
 
-  String get getUsername => _username;
+  String get username => _username;
 
-  int get getCases => _cases;
+  int get confirmed => _confirmed;
 
-  int get getRecovered => _recovered;
+  int get recovered => _recovered;
 
-  int get getDeaths => _deaths;
+  int get deaths => _deaths;
 
   bool get isOnline => _isOnline;
+
+  bool get isLoading => _isLoading;
+
+  DateTime get lastUpdate => _lastUpdate;
+
+  List<DetailModel> get detailConfirmed => _detailConfirmed;
+
+  List<DetailModel> get detailRecovered => _detailRecovered;
+
+  List<DetailModel> get detailDeaths => _detailDeaths;
 }

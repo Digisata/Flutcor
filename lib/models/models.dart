@@ -1,1 +1,2 @@
-export 'token_model.dart';
+export 'corona_model.dart';
+export 'detail_model.dart';

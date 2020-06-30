@@ -2,7 +2,7 @@ import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget {
-  AppWidget _appWidget = AppWidget();
+  final AppWidget _appWidget = AppWidget();
 
   Widget createDrawer(BuildContext context) {
     return Drawer(
