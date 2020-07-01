@@ -143,7 +143,7 @@ class HomePage extends StatelessWidget {
                     _appWidget.card(context, _colorPalette.pink, 'Recovered',
                         'recovered_icon.png'),
                     _appWidget.card(
-                        context, _colorPalette.red, 'Deaths', 'death_icon.png'),
+                        context, _colorPalette.red, 'Deaths', 'death_icon.png')
                   ],
                 );
               },

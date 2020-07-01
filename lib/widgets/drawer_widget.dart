@@ -54,10 +54,6 @@ class DrawerWidget {
                     SizedBox(
                       height: 10.0,
                     ),
-                    createMenuList(context, 'Contact Us'),
-                    SizedBox(
-                      height: 10.0,
-                    ),
                     GestureDetector(
                       onTap: () {
                         _appWidget.showAlertDialog(

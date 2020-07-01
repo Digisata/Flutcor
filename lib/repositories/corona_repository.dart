@@ -17,6 +17,7 @@ class CoronaRepository {
         throw Exception('Data not found');
       else if (_response.statusCode == 200) {
         final CoronaModel _coronaModel = CoronaModel.fromJson(_response.body);
+        assert(_coronaModel != null);
         return _coronaModel;
       }
     } on SocketException {
@@ -42,6 +43,7 @@ class CoronaRepository {
       else if (_response.statusCode == 200) {
         final List<DetailModel> _detailModel =
             detailDataFromJson(_response.body);
+        assert(_detailModel != null);
         return _detailModel;
       }
     } on SocketException {

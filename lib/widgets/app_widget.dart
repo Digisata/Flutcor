@@ -9,10 +9,14 @@ import 'package:provider/provider.dart';
 class AppWidget {
   final NumberHelper _numberHelper = NumberHelper();
 
-  Widget card(BuildContext context, Color color, String title, String icon) {
+  Widget card(BuildContext context, Color color, String title, String icon,
+      [bool isFromDetailPage = false, int data = 0]) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/detailPage', arguments: [title, color]);
+        if (!isFromDetailPage) {
+          Navigator.pushNamed(context, '/listPage',
+              arguments: [title, color, icon]);
+        }
       },
       child: Container(
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
@@ -40,21 +44,25 @@ class AppWidget {
                     Consumer<AppProvider>(
                       builder: (_, AppProvider value, __) {
                         int _data = 0;
-                        switch (title) {
-                          case 'Confirmed':
-                            _data = value.confirmed;
-                            break;
-                          case 'Recovered':
-                            _data = value.recovered;
-                            break;
-                          case 'Deaths':
-                            _data = value.deaths;
-                            break;
+                        if (!isFromDetailPage) {
+                          switch (title) {
+                            case 'Confirmed':
+                              _data = value.confirmed;
+                              break;
+                            case 'Recovered':
+                              _data = value.recovered;
+                              break;
+                            case 'Deaths':
+                              _data = value.deaths;
+                              break;
+                          }
+                        } else {
+                          _data = data;
                         }
                         return value.isLoading
                             ? Loading(
                                 indicator: LineScalePartyIndicator(),
-                                size: 10.0,
+                                size: 25.0,
                                 color: Colors.white,
                               )
                             : Text(

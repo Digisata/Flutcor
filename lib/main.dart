@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => SplashScreen(),
         '/loginPage': (context) => LoginPage(),
         '/homePage': (context) => HomePage(),
+        '/listPage': (context) => ListPage(),
         '/detailPage': (context) => DetailPage(),
       },
       debugShowCheckedModeBanner: false,

@@ -13,14 +13,12 @@ class AppProvider with ChangeNotifier {
   final AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
   final AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
-  int _confirmed = 0, _recovered = 0, _deaths = 0, _loop = 1;
+  int _confirmed = 0, _recovered = 0, _deaths = 0;
   bool _isOnline = false, _isLoading = true;
   DateTime _lastUpdate = DateTime.now();
   List<DetailModel> _detailConfirmed = [],
       _detailRecovered = [],
-      _detailDeaths = [],
-      _search = [],
-      _temp = [];
+      _detailDeaths = [];
   List<dynamic> _localData = [];
 
   void checkConnection(BuildContext context) async {
@@ -90,10 +88,6 @@ class AppProvider with ChangeNotifier {
     _username = _localData[1];
     _isOnline = false;
     notifyListeners();
-  }
-
-  set loop(int loop) {
-    _loop = loop;
   }
 
   String get photoUrl => _photoUrl;

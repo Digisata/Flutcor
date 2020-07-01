@@ -11,6 +11,7 @@ class DetailModel {
     this.confirmed,
     this.recovered,
     this.deaths,
+    this.combinedKey,
   });
 
   final String provinceState;
@@ -19,6 +20,7 @@ class DetailModel {
   final int confirmed;
   final int recovered;
   final int deaths;
+  final String combinedKey;
 
   DetailModel copyWith({
     String provinceState,
@@ -27,6 +29,7 @@ class DetailModel {
     int confirmed,
     int recovered,
     int deaths,
+    String combinedKey,
   }) =>
       DetailModel(
         provinceState: provinceState ?? this.provinceState,
@@ -35,6 +38,7 @@ class DetailModel {
         confirmed: confirmed ?? this.confirmed,
         recovered: recovered ?? this.recovered,
         deaths: deaths ?? this.deaths,
+        combinedKey: combinedKey ?? this.combinedKey,
       );
 
   factory DetailModel.fromJson(String str) =>
@@ -49,6 +53,7 @@ class DetailModel {
         confirmed: json["confirmed"],
         recovered: json["recovered"],
         deaths: json["deaths"],
+        combinedKey: json["combinedKey"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -58,5 +63,6 @@ class DetailModel {
         "confirmed": confirmed,
         "recovered": recovered,
         "deaths": deaths,
+        "combinedKey": combinedKey,
       };
 }
