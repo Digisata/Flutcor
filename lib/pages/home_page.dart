@@ -3,6 +3,7 @@ import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,10 +23,28 @@ class HomePage extends StatelessWidget {
     final _photoProfile = Consumer<AppProvider>(
       builder: (_, AppProvider value, __) {
         return CircleAvatar(
-          backgroundImage: NetworkImage(
-            value.photoUrl,
+          radius: 50.0,
+          child: CachedNetworkImage(
+            fit: BoxFit.cover,
+            imageUrl: value.photoUrl,
+            progressIndicatorBuilder: (context, url, download) =>
+                CircularProgressIndicator(
+              value: download.progress,
+            ),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            imageBuilder: (context, imageProvider) => Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
-          radius: 60.0,
         );
       },
     );
@@ -119,10 +138,10 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    _appWidget.card(context, _colorPalette.green,
-                        'Confirmed', 'confirmed_icon.png'),
-                    _appWidget.card(context, _colorPalette.pink,
-                        'Recovered', 'recovered_icon.png'),
+                    _appWidget.card(context, _colorPalette.green, 'Confirmed',
+                        'confirmed_icon.png'),
+                    _appWidget.card(context, _colorPalette.pink, 'Recovered',
+                        'recovered_icon.png'),
                     _appWidget.card(
                         context, _colorPalette.red, 'Deaths', 'death_icon.png'),
                   ],

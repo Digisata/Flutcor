@@ -7,18 +7,20 @@ import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AppProvider extends ChangeNotifier {
+class AppProvider with ChangeNotifier {
   final FirebaseAuths _firebaseAuths = FirebaseAuths();
   final CoronaRepository _coronaRepository = CoronaRepository();
   final AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
   final AppWidget _appWidget = AppWidget();
   String _photoUrl = '', _username = '';
-  int _confirmed = 0, _recovered = 0, _deaths = 0;
+  int _confirmed = 0, _recovered = 0, _deaths = 0, _loop = 1;
   bool _isOnline = false, _isLoading = true;
   DateTime _lastUpdate = DateTime.now();
   List<DetailModel> _detailConfirmed = [],
       _detailRecovered = [],
-      _detailDeaths = [];
+      _detailDeaths = [],
+      _search = [],
+      _temp = [];
   List<dynamic> _localData = [];
 
   void checkConnection(BuildContext context) async {
@@ -62,7 +64,6 @@ class AppProvider extends ChangeNotifier {
       _recovered = _coronaModel.recovered.value;
       _deaths = _coronaModel.deaths.value;
       _lastUpdate = _coronaModel.lastUpdate;
-      _appSharedPreferences.syncCoronaData(_confirmed, _recovered, _deaths);
       notifyListeners();
     } catch (error) {
       throw 'get main data error: $error';
@@ -87,11 +88,12 @@ class AppProvider extends ChangeNotifier {
     _localData = await _appSharedPreferences.getLocalData();
     _photoUrl = _localData[0];
     _username = _localData[1];
-    _confirmed = _localData[2];
-    _recovered = _localData[3];
-    _deaths = _localData[4];
     _isOnline = false;
     notifyListeners();
+  }
+
+  set loop(int loop) {
+    _loop = loop;
   }
 
   String get photoUrl => _photoUrl;

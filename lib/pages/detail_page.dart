@@ -1,43 +1,95 @@
+import 'package:flutcor/commons/commons.dart';
 import 'package:flutcor/helper/helpers.dart';
 import 'package:flutcor/models/models.dart';
 import 'package:flutcor/providers/providers.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
   final TextEditingController _textEditingController = TextEditingController();
   List<dynamic> _argumentData;
+  final NumberHelper _numberHelper = NumberHelper();
+  final ColorPalette _colorPalette = ColorPalette();
+  List<DetailModel> _data = [], _duplicateData = [];
+  bool _isStartUp = true, _isFound = true;
+
+  void searchItem(String keyword) {
+    List<DetailModel> _temp = [];
+    _temp.addAll(_duplicateData);
+    if (keyword.isNotEmpty) {
+      List<DetailModel> _search = [];
+      bool _atLeastFoundOne = false;
+      _temp.forEach(
+        (item) {
+          if (item.countryRegion
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase()) ||
+              item.provinceState
+                  .toLowerCase()
+                  .contains(keyword.toLowerCase())) {
+            _atLeastFoundOne = true;
+            _search.add(item);
+          } else {
+            if (_atLeastFoundOne)
+              _isFound = true;
+            else
+              _isFound = false;
+          }
+        },
+      );
+      setState(
+        () {
+          _data.clear();
+          _data.addAll(_search);
+        },
+      );
+      return;
+    } else {
+      setState(
+        () {
+          _data.clear();
+          _data.addAll(_duplicateData);
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final AppProvider _appProvider = Provider.of<AppProvider>(context);
-    final NumberHelper _numberHelper = NumberHelper();
     _argumentData = ModalRoute.of(context).settings.arguments;
-    List<DetailModel> _data = [];
 
-    switch (_argumentData[0]) {
-      case 'Confirmed':
-        _data = _appProvider.detailConfirmed;
-        break;
-      case 'Recovered':
-        _data = _appProvider.detailRecovered;
-        break;
-      case 'Deaths':
-        _data = _appProvider.detailDeaths;
-        break;
+    if (_isStartUp) {
+      switch (_argumentData[0]) {
+        case 'Confirmed':
+          _data.addAll(_appProvider.detailConfirmed);
+          break;
+        case 'Recovered':
+          _data.addAll(_appProvider.detailRecovered);
+          break;
+        case 'Deaths':
+          _data.addAll(_appProvider.detailDeaths);
+          break;
+      }
+      _duplicateData.addAll(_data);
+      _isStartUp = false;
     }
 
     final _titleText = Text(
       _argumentData[0],
-      textDirection: TextDirection.ltr,
       style: Theme.of(context).textTheme.headline1,
     );
 
     final _updateText = Consumer<AppProvider>(
       builder: (_, AppProvider value, __) {
         return Text(
-          'Last Update: ${value.lastUpdate}',
-          textDirection: TextDirection.ltr,
+          'Last Update: ${DateFormat('dd-MM-yyyy').format(value.lastUpdate)}',
           style: Theme.of(context).textTheme.headline2,
         );
       },
@@ -93,7 +145,7 @@ class DetailPage extends StatelessWidget {
                         ),
                         _updateText,
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -107,59 +159,68 @@ class DetailPage extends StatelessWidget {
                   cursorColor: Colors.grey,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,
-                    hintText: 'Search',
+                    hintText: 'Search your area,....',
                     prefixIcon: Icon(
                       Icons.search,
                       color: Colors.grey,
                     ),
-                    fillColor: Colors.white,
+                    fillColor: _colorPalette.grey,
                     filled: true,
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(15.0),
                       borderSide: BorderSide.none,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(15.0),
                       borderSide: BorderSide.none,
                     ),
                   ),
-                  onChanged: (value) {},
+                  onChanged: (String keyword) {
+                    searchItem(keyword);
+                  },
                 ),
               ),
               SizedBox(
                 height: 10.0,
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: _data.length ?? 0,
-                  itemBuilder: (context, index) {
-                    DetailModel _itemData = _data[index];
-                    String _provinceState =
-                        _itemData.provinceState ?? 'Unknown';
-                    String _sum;
-                    switch (_argumentData[0]) {
-                      case 'Confirmed':
-                        _sum = _numberHelper
-                            .format(_itemData.confirmed.toString());
-                        break;
-                      case 'Recovered':
-                        _sum = _numberHelper
-                            .format(_itemData.recovered.toString());
-                        break;
-                      case 'Deaths':
-                        _sum =
-                            _numberHelper.format(_itemData.deaths.toString());
-                        break;
-                    }
+                child: _isFound
+                    ? ListView.builder(
+                        itemCount: _data.length,
+                        itemBuilder: (context, index) {
+                          DetailModel _itemData = _data[index];
+                          List<String> _provinceState =
+                              _itemData.provinceState.split(' ');
+                          String _sum;
+                          switch (_argumentData[0]) {
+                            case 'Confirmed':
+                              _sum = _numberHelper
+                                  .format(_itemData.confirmed.toString());
+                              break;
+                            case 'Recovered':
+                              _sum = _numberHelper
+                                  .format(_itemData.recovered.toString());
+                              break;
+                            case 'Deaths':
+                              _sum = _numberHelper
+                                  .format(_itemData.deaths.toString());
+                              break;
+                          }
 
-                    return item(
-                      context,
-                      '$_provinceState, ${_itemData.countryRegion}',
-                      _sum,
-                    );
-                  },
-                ),
-              )
+                          return item(
+                            context,
+                            '${_provinceState[0]}${_provinceState[0] == '' ? '' : ', '}${_itemData.countryRegion}',
+                            _sum,
+                          );
+                        },
+                      )
+                    : Center(
+                        child: Text(
+                          'Data not found',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ),
+              ),
             ],
           ),
         ),

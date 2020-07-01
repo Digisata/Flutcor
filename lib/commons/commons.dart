@@ -1,1 +1,1 @@
-export 'color_paletter.dart';
+export 'color_palette.dart';
