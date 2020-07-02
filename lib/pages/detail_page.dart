@@ -46,9 +46,9 @@ class DetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
-                    tooltip: 'Back to home page',
+                    tooltip: 'Back to list page',
                     icon: Image.asset(
-                      'images/back_button.png',
+                      'assets/buttons/back_button.png',
                       height: 27.0,
                       width: 27.0,
                     ),

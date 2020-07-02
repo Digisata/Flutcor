@@ -19,7 +19,7 @@ class _ListPageState extends State<ListPage> {
   List<DetailModel> _data = [], _duplicateData = [];
   bool _isStartUp = true, _isFound = true;
 
-  void searchItem(String keyword) {
+  void _searchItem(String keyword) {
     List<DetailModel> _temp = [];
     _temp.addAll(_duplicateData);
     if (keyword.isNotEmpty) {
@@ -121,7 +121,7 @@ class _ListPageState extends State<ListPage> {
                   IconButton(
                     tooltip: 'Back to home page',
                     icon: Image.asset(
-                      'images/back_button.png',
+                      'assets/buttons/back_button.png',
                       height: 27.0,
                       width: 27.0,
                     ),
@@ -156,7 +156,7 @@ class _ListPageState extends State<ListPage> {
                       ],
                     ),
                     Image.asset(
-                      'images/${_argumentData[2]}',
+                      'assets/icons/${_argumentData[2]}',
                       width: 60.0,
                       height: 60.0,
                     ),
@@ -181,7 +181,7 @@ class _ListPageState extends State<ListPage> {
                     ),
                     suffixIcon: _textEditingController.text != ''
                         ? IconButton(
-                          tooltip: 'Clear search',
+                            tooltip: 'Clear search',
                             icon: Icon(
                               Icons.clear,
                               color: Colors.grey,
@@ -213,7 +213,7 @@ class _ListPageState extends State<ListPage> {
                     ),
                   ),
                   onChanged: (String keyword) {
-                    searchItem(keyword);
+                    _searchItem(keyword.trim());
                   },
                 ),
               ),
@@ -268,7 +268,7 @@ class _ListPageState extends State<ListPage> {
                                 },
                               );
                             },
-                            child: item(
+                            child: _item(
                               context,
                               '$_area',
                               _sum,
@@ -290,7 +290,7 @@ class _ListPageState extends State<ListPage> {
     );
   }
 
-  Widget item(BuildContext context, String title, String sum) {
+  Container _item(BuildContext context, String title, String sum) {
     return Container(
       padding: EdgeInsets.all(16.0),
       margin: EdgeInsets.only(bottom: 5.0),

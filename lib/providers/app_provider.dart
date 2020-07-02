@@ -32,12 +32,12 @@ class AppProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } else {
-      setOffline();
+      _setOffline();
       _appWidget.showAlertDialog(
         context,
         'Ooops!',
         'You are offline, the data may not up to date,....',
-        'images/confused_emot.png',
+        'assets/emots/confused_emot.png',
         'Understand',
       );
     }
@@ -47,6 +47,7 @@ class AppProvider with ChangeNotifier {
     try {
       final FirebaseUser _user = await _firebaseAuths.getCurrentUser();
       _photoUrl = _user.photoUrl.toString();
+      print(_photoUrl);
       _username = _user.displayName.toString();
       _appSharedPreferences.syncUserData(_photoUrl, _username);
       notifyListeners();
@@ -82,7 +83,7 @@ class AppProvider with ChangeNotifier {
     }
   }
 
-  void setOffline() async {
+  void _setOffline() async {
     _localData = await _appSharedPreferences.getLocalData();
     _photoUrl = _localData[0];
     _username = _localData[1];

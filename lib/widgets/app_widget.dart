@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class AppWidget {
   final NumberHelper _numberHelper = NumberHelper();
 
-  Widget card(BuildContext context, Color color, String title, String icon,
+  GestureDetector card(BuildContext context, Color color, String title, String icon,
       [bool isFromDetailPage = false, int data = 0]) {
     return GestureDetector(
       onTap: () {
@@ -78,7 +78,7 @@ class AppWidget {
                   ],
                 ),
                 Image.asset(
-                  'images/$icon',
+                  'assets/icons/$icon',
                   height: 60.0,
                   width: 60.0,
                 ),

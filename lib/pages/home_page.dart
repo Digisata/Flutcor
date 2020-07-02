@@ -53,6 +53,7 @@ class HomePage extends StatelessWidget {
       builder: (_, AppProvider value, __) {
         return Text(
           'Hi, ${value.username}',
+          textAlign: TextAlign.center,
           textDirection: TextDirection.ltr,
           style: Theme.of(context).textTheme.headline1,
         );
@@ -61,12 +62,14 @@ class HomePage extends StatelessWidget {
 
     final _adviceText = Text(
       'Stay at home, and stay safe',
+      textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
       style: Theme.of(context).textTheme.headline2,
     );
 
     final _descriptionText = Text(
       'World wide',
+      textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
       style: Theme.of(context).textTheme.headline4,
     );
@@ -96,7 +99,7 @@ class HomePage extends StatelessWidget {
                         IconButton(
                           tooltip: 'Refresh home page',
                           icon: Image.asset(
-                            'images/refresh_button.png',
+                            'assets/buttons/refresh_button.png',
                             height: 27.0,
                             width: 27.0,
                           ),
@@ -107,7 +110,7 @@ class HomePage extends StatelessWidget {
                         IconButton(
                           tooltip: 'Show main menu',
                           icon: Image.asset(
-                            'images/menu_button.png',
+                            'assets/buttons/menu_button.png',
                             height: 25.0,
                             width: 25.0,
                           ),

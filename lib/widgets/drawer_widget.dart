@@ -34,7 +34,7 @@ class DrawerWidget {
                         Navigator.pop(context);
                       },
                       child: Image.asset(
-                        'images/close_button.png',
+                        'assets/buttons/close_button.png',
                         height: 25.0,
                         width: 25.0,
                       ),
@@ -46,11 +46,12 @@ class DrawerWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    createMenuList(context, 'About Us'),
-                    SizedBox(
-                      height: 10.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/aboutPage');
+                      },
+                      child: _createMenuList(context, 'About Us'),
                     ),
-                    createMenuList(context, 'More Apps'),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -60,12 +61,12 @@ class DrawerWidget {
                           context,
                           'We will miss you!',
                           'Are you sure want to logout?',
-                          'images/sad_emot.png',
+                          'assets/emots/sad_emot.png',
                           '',
                           true,
                         );
                       },
-                      child: createMenuList(context, 'Logout'),
+                      child: _createMenuList(context, 'Logout'),
                     ),
                   ],
                 ),
@@ -91,7 +92,7 @@ class DrawerWidget {
     );
   }
 
-  Widget createMenuList(BuildContext context, String text) {
+  Widget _createMenuList(BuildContext context, String text) {
     return Text(
       text,
       textDirection: TextDirection.ltr,

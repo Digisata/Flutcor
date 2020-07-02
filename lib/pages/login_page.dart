@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              "images/google_logo.png",
+              "assets/logos/google_logo.png",
               width: 35.0,
               height: 35.0,
               alignment: Alignment.bottomLeft,
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              "images/facebook_logo.png",
+              "assets/logos/facebook_logo.png",
               width: 35.0,
               height: 35.0,
               alignment: Alignment.bottomLeft,
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                    child: Image.asset('images/logo.png',
+                    child: Image.asset('assets/logos/logo.png',
                         height: 200.0, width: 200.0)),
                 Text(
                   "Flutcor",

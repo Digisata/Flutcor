@@ -26,6 +26,7 @@ class FacebookAuths {
         );
         final FirebaseUser _user =
             (await _firebaseAuth.signInWithCredential(_credential)).user;
+        assert(_user != null);
         assert(_user.displayName != null);
         assert(_user.photoUrl != null);
         assert(!_user.isAnonymous);

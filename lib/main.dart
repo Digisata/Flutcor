@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/homePage': (context) => HomePage(),
         '/listPage': (context) => ListPage(),
         '/detailPage': (context) => DetailPage(),
+        '/aboutPage': (context) => AboutPage(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutcor',
