@@ -105,8 +105,11 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(
+          padding: EdgeInsets.fromLTRB(
             16.0,
+            16.0,
+            16.0,
+            0,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

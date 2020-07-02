@@ -9,48 +9,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextStyle _textStyle =
       TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  final GoogleAuths _googleAuth = GoogleAuths();
   final FacebookAuths _facebookAuth = FacebookAuths();
 
   @override
   Widget build(BuildContext context) {
-    final signInWithGoogle = Material(
-      borderRadius: BorderRadius.circular(20),
-      borderOnForeground: true,
-      child: MaterialButton(
-        color: Colors.grey,
-        minWidth: 350.0,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () async {
-          try {
-            await _googleAuth.signInWithGoogle();
-            Navigator.pushReplacementNamed(context, '/homePage');
-          } catch (error) {
-            throw 'google sign in error: $error';
-          }
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              "assets/logos/google_logo.png",
-              width: 35.0,
-              height: 35.0,
-              alignment: Alignment.bottomLeft,
-            ),
-            Text(
-              '   Sign in with Google',
-              textDirection: TextDirection.ltr,
-              textAlign: TextAlign.center,
-              style: _textStyle.copyWith(
-                  color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-
     final signInWithFacebook = Material(
       borderRadius: BorderRadius.circular(20),
       borderOnForeground: true,
@@ -114,8 +76,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 12,
                       fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 45.0),
-                signInWithGoogle,
                 SizedBox(height: 15.0),
                 signInWithFacebook,
                 SizedBox(height: 15.0),

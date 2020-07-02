@@ -49,7 +49,7 @@ class AppProvider with ChangeNotifier {
       _photoUrl = _user.photoUrl.toString();
       print(_photoUrl);
       _username = _user.displayName.toString();
-      _appSharedPreferences.syncUserData(_photoUrl, _username);
+      _appSharedPreferences.setUserData(_photoUrl, _username);
       notifyListeners();
     } catch (error) {
       throw 'get user data error: $error';
