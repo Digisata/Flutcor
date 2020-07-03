@@ -1,24 +1,18 @@
+import 'package:flutcor/commons/commons.dart';
 import 'package:flutcor/services/services.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final TextStyle _textStyle =
-      TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+class LoginPage extends StatelessWidget {
   final FacebookAuths _facebookAuth = FacebookAuths();
 
   @override
   Widget build(BuildContext context) {
-    final signInWithFacebook = Material(
-      borderRadius: BorderRadius.circular(20),
-      borderOnForeground: true,
+    final _signInWithFacebook = Material(
+      borderRadius: BorderRadius.circular(30.0),
+      color: Colors.blue,
       child: MaterialButton(
-        color: Colors.blue,
-        minWidth: 350.0,
+        height: ContentSize.height(context) * 0.07,
+        minWidth: ContentSize.width(context),
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
           try {
@@ -29,21 +23,27 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
               "assets/logos/facebook_logo.png",
-              width: 35.0,
-              height: 35.0,
+              width: ContentSize.height(context) * 0.04,
+              height: ContentSize.height(context) * 0.04,
               alignment: Alignment.bottomLeft,
             ),
+            SizedBox(
+              width: ContentSize.height(context) * 0.01,
+            ),
             Text(
-              '   Sign in with Facebook',
+              'Sign in with Facebook',
               textDirection: TextDirection.ltr,
               textAlign: TextAlign.center,
-              style: _textStyle.copyWith(
-                  color: Colors.white, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2.copyWith(
+                    color: Colors.white,
+                    fontSize: ContentSize.dp18(context),
+                  ),
             ),
           ],
         ),
@@ -55,30 +55,47 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         body: Center(
           child: Container(
+            height: ContentSize.height(context),
+            width: ContentSize.width(context),
+            padding: EdgeInsets.all(16.0),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Image.asset(
+                  'assets/logos/logo.png',
+                  height: ContentSize.height(context) * 0.25,
+                  width: ContentSize.height(context) * 0.25,
+                ),
                 SizedBox(
-                    child: Image.asset('assets/logos/logo.png',
-                        height: 200.0, width: 200.0)),
+                  height: ContentSize.height(context) * 0.03,
+                ),
                 Text(
                   "Flutcor",
-                  style: TextStyle(
-                    fontFamily: "Caviar Dreams",
-                    fontSize: 72,
-                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline1.copyWith(
+                        fontSize: ContentSize.dp30(context),
+                      ),
                 ),
                 Text(
                   "Covid-19 Monitoring App Using Flutter Framework",
-                  style: TextStyle(
-                      fontFamily: "Caviar Dreams",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textDirection: TextDirection.ltr,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline2.copyWith(
+                        fontSize: ContentSize.dp20(context),
+                      ),
                 ),
-                SizedBox(height: 15.0),
-                signInWithFacebook,
-                SizedBox(height: 15.0),
+                SizedBox(
+                  height: ContentSize.height(context) * 0.03,
+                ),
+                _signInWithFacebook,
               ],
             ),
           ),

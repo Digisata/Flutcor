@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Padauk',
         textTheme: TextTheme(
           headline1: TextStyle(
-            fontSize: 25.0,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.normal,
             color: Colors.black,

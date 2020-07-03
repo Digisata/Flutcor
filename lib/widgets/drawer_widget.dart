@@ -1,5 +1,8 @@
+import 'package:flutcor/commons/commons.dart';
+import 'package:flutcor/providers/app_provider.dart';
 import 'package:flutcor/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DrawerWidget {
   final AppWidget _appWidget = AppWidget();
@@ -35,8 +38,8 @@ class DrawerWidget {
                       },
                       child: Image.asset(
                         'assets/buttons/close_button.png',
-                        height: 25.0,
-                        width: 25.0,
+                        height: ContentSize.height(context) * 0.03,
+                        width: ContentSize.height(context) * 0.03,
                       ),
                     ),
                   ],
@@ -75,12 +78,16 @@ class DrawerWidget {
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Version 1.0.0',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3
-                          .copyWith(fontSize: 15.0),
+                    Consumer<AppProvider>(
+                      builder: (_, AppProvider value, __) {
+                        return Text(
+                          'Version ${value.appVersion}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3
+                              .copyWith(fontSize: 15.0),
+                        );
+                      },
                     ),
                   ],
                 ),

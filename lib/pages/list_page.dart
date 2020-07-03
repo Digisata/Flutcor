@@ -14,8 +14,6 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   final TextEditingController _textEditingController = TextEditingController();
   List<dynamic> _argumentData;
-  final NumberHelper _numberHelper = NumberHelper();
-  final ColorPalette _colorPalette = ColorPalette();
   List<DetailModel> _data = [], _duplicateData = [];
   bool _isStartUp = true, _isFound = true;
 
@@ -80,37 +78,42 @@ class _ListPageState extends State<ListPage> {
 
     final _titleText = Text(
       _argumentData[0],
-      style: Theme.of(context).textTheme.headline1,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: Theme.of(context).textTheme.headline1.copyWith(
+            fontSize: ContentSize.dp24(context),
+          ),
     );
 
     final _updateText = Consumer<AppProvider>(
       builder: (_, AppProvider value, __) {
         return Text(
           'Last Update: ${DateFormat('dd-MM-yyyy').format(value.lastUpdate)}',
-          style: Theme.of(context).textTheme.headline2,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.headline2.copyWith(
+                fontSize: ContentSize.dp20(context),
+              ),
         );
       },
     );
 
     final _foundText = Padding(
-      padding: EdgeInsets.only(
-        left: 5.0,
-      ),
+      padding: EdgeInsets.only(left: 5.0),
       child: Text(
         'Found ${_data.length} data',
-        style: Theme.of(context).textTheme.headline2.copyWith(fontSize: 15.0),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: Theme.of(context).textTheme.headline2.copyWith(
+              fontSize: ContentSize.dp16(context),
+            ),
       ),
     );
 
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            16.0,
-            16.0,
-            16.0,
-            0,
-          ),
+          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
@@ -125,8 +128,8 @@ class _ListPageState extends State<ListPage> {
                     tooltip: 'Back to home page',
                     icon: Image.asset(
                       'assets/buttons/back_button.png',
-                      height: 27.0,
-                      width: 27.0,
+                      height: ContentSize.height(context) * 0.03,
+                      width: ContentSize.height(context) * 0.03,
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -135,12 +138,10 @@ class _ListPageState extends State<ListPage> {
                 ],
               ),
               SizedBox(
-                height: 30.0,
+                height: ContentSize.height(context) * 0.03,
               ),
               Padding(
-                padding: EdgeInsets.only(
-                  left: 5.0,
-                ),
+                padding: EdgeInsets.only(left: 5.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
@@ -153,24 +154,25 @@ class _ListPageState extends State<ListPage> {
                       children: <Widget>[
                         _titleText,
                         SizedBox(
-                          height: 10.0,
+                          height: ContentSize.height(context) * 0.02,
                         ),
                         _updateText,
                       ],
                     ),
                     Image.asset(
                       'assets/icons/${_argumentData[2]}',
-                      width: 60.0,
-                      height: 60.0,
+                      width: ContentSize.height(context) * 0.08,
+                      height: ContentSize.height(context) * 0.08,
                     ),
                   ],
                 ),
               ),
               SizedBox(
-                height: 5.0,
+                height: ContentSize.height(context) * 0.01,
               ),
               Container(
-                height: 50.0,
+                height: ContentSize.height(context) * 0.06,
+                width: ContentSize.width(context),
                 child: TextField(
                   controller: _textEditingController,
                   cursorColor: Colors.grey,
@@ -204,7 +206,7 @@ class _ListPageState extends State<ListPage> {
                             Icons.clear,
                             color: Colors.transparent,
                           ),
-                    fillColor: _colorPalette.grey,
+                    fillColor: ColorPalette.grey,
                     filled: true,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15.0),
@@ -216,12 +218,14 @@ class _ListPageState extends State<ListPage> {
                     ),
                   ),
                   onChanged: (String keyword) {
-                    _searchItem(keyword.trim());
+                    _searchItem(
+                      keyword.trim(),
+                    );
                   },
                 ),
               ),
               SizedBox(
-                height: 5.0,
+                height: ContentSize.height(context) * 0.01,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -231,7 +235,7 @@ class _ListPageState extends State<ListPage> {
                 ],
               ),
               SizedBox(
-                height: 5.0,
+                height: ContentSize.height(context) * 0.01,
               ),
               Expanded(
                 child: _isFound
@@ -243,16 +247,16 @@ class _ListPageState extends State<ListPage> {
                           String _sum;
                           switch (_argumentData[0]) {
                             case 'Confirmed':
-                              _sum = _numberHelper
-                                  .format(_itemData.confirmed.toString());
+                              _sum = NumberHelper.format(
+                                  _itemData.confirmed.toString());
                               break;
                             case 'Recovered':
-                              _sum = _numberHelper
-                                  .format(_itemData.recovered.toString());
+                              _sum = NumberHelper.format(
+                                  _itemData.recovered.toString());
                               break;
                             case 'Deaths':
-                              _sum = _numberHelper
-                                  .format(_itemData.deaths.toString());
+                              _sum = NumberHelper.format(
+                                  _itemData.deaths.toString());
                               break;
                           }
 
@@ -297,8 +301,8 @@ class _ListPageState extends State<ListPage> {
     return Container(
       padding: EdgeInsets.all(16.0),
       margin: EdgeInsets.only(bottom: 5.0),
-      width: MediaQuery.of(context).size.width,
-      height: 50.0,
+      width: ContentSize.width(context),
+      height: ContentSize.height(context) * 0.06,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
         color: _argumentData[1],
@@ -312,7 +316,7 @@ class _ListPageState extends State<ListPage> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 15.0,
+              fontSize: ContentSize.dp16(context),
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.normal,
@@ -321,8 +325,10 @@ class _ListPageState extends State<ListPage> {
           ),
           Text(
             sum,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontSize: 15.0,
+              fontSize: ContentSize.dp16(context),
               color: Colors.white,
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.normal,

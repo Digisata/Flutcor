@@ -1,3 +1,4 @@
+import 'package:flutcor/commons/commons.dart';
 import 'package:flutcor/helper/helpers.dart';
 import 'package:flutcor/providers/providers.dart';
 import 'package:flutcor/services/services.dart';
@@ -7,9 +8,8 @@ import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
 
 class AppWidget {
-  final NumberHelper _numberHelper = NumberHelper();
-
-  GestureDetector card(BuildContext context, Color color, String title, String icon,
+  GestureDetector card(
+      BuildContext context, Color color, String title, String icon,
       [bool isFromDetailPage = false, int data = 0]) {
     return GestureDetector(
       onTap: () {
@@ -20,7 +20,8 @@ class AppWidget {
       },
       child: Container(
         margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-        height: 100,
+        height: ContentSize.height(context) * 0.14,
+        width: ContentSize.width(context),
         child: Card(
           color: color,
           shape: RoundedRectangleBorder(
@@ -38,8 +39,12 @@ class AppWidget {
                   children: <Widget>[
                     Text(
                       title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       textDirection: TextDirection.ltr,
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline3.copyWith(
+                            fontSize: ContentSize.dp18(context),
+                          ),
                     ),
                     Consumer<AppProvider>(
                       builder: (_, AppProvider value, __) {
@@ -66,12 +71,16 @@ class AppWidget {
                                 color: Colors.white,
                               )
                             : Text(
-                                '${_numberHelper.format(_data.toString())}',
+                                '${NumberHelper.format(_data.toString())}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 textDirection: TextDirection.ltr,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline3
-                                    .copyWith(fontSize: 25.0),
+                                    .copyWith(
+                                      fontSize: ContentSize.dp25(context),
+                                    ),
                               );
                       },
                     ),
@@ -79,8 +88,8 @@ class AppWidget {
                 ),
                 Image.asset(
                   'assets/icons/$icon',
-                  height: 60.0,
-                  width: 60.0,
+                  height: ContentSize.height(context) * 0.08,
+                  width: ContentSize.height(context) * 0.08,
                 ),
               ],
             ),
@@ -124,8 +133,8 @@ class AppWidget {
                   child: Center(
                     child: Image.asset(
                       image,
-                      height: 130.0,
-                      width: 130.0,
+                      height: ContentSize.height(context) * 0.2,
+                      width: ContentSize.height(context) * 0.2,
                     ),
                   ),
                 ),
@@ -151,25 +160,30 @@ class AppWidget {
                         flex: 1,
                         child: Text(
                           title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline4.copyWith(
+                                fontSize: ContentSize.dp24(context),
+                              ),
                         ),
                       ),
                       Flexible(
                         flex: 1,
                         child: Text(
                           message,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              .copyWith(fontSize: 20.0),
+                          style: Theme.of(context).textTheme.headline4.copyWith(
+                                fontSize: ContentSize.dp20(context),
+                              ),
                         ),
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: ContentSize.height(context) * 0.02,
                       ),
                       _isLogout
                           ? Row(
@@ -189,12 +203,17 @@ class AppWidget {
                                   },
                                   child: Text(
                                     'No',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4
-                                        .copyWith(color: Colors.white),
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontSize: ContentSize.dp24(context),
+                                        ),
                                   ),
                                 ),
                                 RaisedButton(
@@ -215,12 +234,17 @@ class AppWidget {
                                   },
                                   child: Text(
                                     'Yes',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4
-                                        .copyWith(color: Colors.white),
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontSize: ContentSize.dp24(context),
+                                        ),
                                   ),
                                 ),
                               ],
@@ -242,12 +266,17 @@ class AppWidget {
                                   },
                                   child: Text(
                                     textBtn,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     textDirection: TextDirection.ltr,
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline4
-                                        .copyWith(color: Colors.white),
+                                        .copyWith(
+                                          color: Colors.white,
+                                          fontSize: ContentSize.dp24(context),
+                                        ),
                                   ),
                                 ),
                               ],

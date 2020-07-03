@@ -6,13 +6,14 @@ import 'package:flutcor/widgets/widgets.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 class AppProvider with ChangeNotifier {
   final FirebaseAuths _firebaseAuths = FirebaseAuths();
   final CoronaRepository _coronaRepository = CoronaRepository();
   final AppSharedPreferences _appSharedPreferences = AppSharedPreferences();
   final AppWidget _appWidget = AppWidget();
-  String _photoUrl = '', _username = '';
+  String _photoUrl = '', _username = '', _appVersion = '';
   int _confirmed = 0, _recovered = 0, _deaths = 0;
   bool _isOnline = false, _isLoading = true;
   DateTime _lastUpdate = DateTime.now();
@@ -28,6 +29,7 @@ class AppProvider with ChangeNotifier {
       getUserData();
       getMainData();
       getDetailData();
+      getAppInfo();
       _isOnline = true;
       _isLoading = false;
       notifyListeners();
@@ -47,7 +49,6 @@ class AppProvider with ChangeNotifier {
     try {
       final FirebaseUser _user = await _firebaseAuths.getCurrentUser();
       _photoUrl = _user.photoUrl.toString();
-      print(_photoUrl);
       _username = _user.displayName.toString();
       _appSharedPreferences.setUserData(_photoUrl, _username);
       notifyListeners();
@@ -84,16 +85,32 @@ class AppProvider with ChangeNotifier {
   }
 
   void _setOffline() async {
-    _localData = await _appSharedPreferences.getLocalData();
-    _photoUrl = _localData[0];
-    _username = _localData[1];
-    _isOnline = false;
-    notifyListeners();
+    try {
+      _localData = await _appSharedPreferences.getLocalData();
+      _photoUrl = _localData[0];
+      _username = _localData[1];
+      _isOnline = false;
+      notifyListeners();
+    } catch (error) {
+      throw 'set offline error: $error';
+    }
+  }
+
+  void getAppInfo() async {
+    try {
+      final PackageInfo _packageInfo = await PackageInfo.fromPlatform();
+      _appVersion = _packageInfo.version;
+      notifyListeners();
+    } catch (error) {
+      throw 'get app info error: $error';
+    }
   }
 
   String get photoUrl => _photoUrl;
 
   String get username => _username;
+
+  String get appVersion => _appVersion;
 
   int get confirmed => _confirmed;
 
