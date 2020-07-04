@@ -8,7 +8,7 @@ class FacebookAuths {
   signInWithFacebook() async {
     final _facebookLoginResult = await _facebookLogin.logIn(['email']);
     assert(_facebookLoginResult != null);
-    final _accessToken = _facebookLoginResult.accessToken.token;
+    final String _accessToken = _facebookLoginResult.accessToken.token;
     assert(_accessToken != null);
 
     switch (_facebookLoginResult.status) {
@@ -21,11 +21,11 @@ class FacebookAuths {
         // onLoginStatusChanged(false);
         break;
       case FacebookLoginStatus.loggedIn:
-        final AuthCredential _credential = FacebookAuthProvider.getCredential(
+        final AuthCredential _authCredential = FacebookAuthProvider.getCredential(
           accessToken: _accessToken,
         );
         final FirebaseUser _user =
-            (await _firebaseAuth.signInWithCredential(_credential)).user;
+            (await _firebaseAuth.signInWithCredential(_authCredential)).user;
         assert(_user != null);
         assert(_user.displayName != null);
         assert(_user.photoUrl != null);

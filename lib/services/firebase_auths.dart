@@ -34,7 +34,6 @@ class FirebaseAuths implements BaseAuth {
 
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser _user = await _firebaseAuth.currentUser();
-    // assert(_user != null);
     return _user;
   }
 

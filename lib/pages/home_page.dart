@@ -22,6 +22,7 @@ class HomePage extends StatelessWidget {
     final _photoProfile = Consumer<AppProvider>(
       builder: (_, AppProvider value, __) {
         return CircleAvatar(
+          backgroundColor: Colors.transparent,
           radius: ContentSize.height(context) * 0.06,
           child: CachedNetworkImage(
             fit: BoxFit.cover,
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
               height: ContentSize.height(context) * 0.12,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white,
+                color: Colors.transparent,
                 image: DecorationImage(
                   image: imageProvider,
                   fit: BoxFit.cover,
@@ -157,8 +158,8 @@ class HomePage extends StatelessWidget {
                           'confirmed_icon.png'),
                       _appWidget.card(context, ColorPalette.pink, 'Recovered',
                           'recovered_icon.png'),
-                      _appWidget.card(
-                          context, ColorPalette.red, 'Deaths', 'death_icon.png')
+                      _appWidget.card(context, ColorPalette.red, 'Deaths',
+                          'death_icon.png'),
                     ],
                   );
                 },

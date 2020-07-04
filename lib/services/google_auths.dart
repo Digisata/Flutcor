@@ -12,14 +12,14 @@ class GoogleAuths {
       final GoogleSignInAuthentication _googleAuth =
           await _googleUser.authentication;
       assert(_googleAuth != null);
-      final AuthCredential _credential = GoogleAuthProvider.getCredential(
+      final AuthCredential _authCredential = GoogleAuthProvider.getCredential(
         idToken: _googleAuth.idToken,
         accessToken: _googleAuth.accessToken,
       );
-      assert(_credential != null);
+      assert(_authCredential != null);
 
       final FirebaseUser _user =
-          (await _firebaseAuth.signInWithCredential(_credential)).user;
+          (await _firebaseAuth.signInWithCredential(_authCredential)).user;
       assert(_user != null);
       assert(_user.displayName != null);
       assert(_user.photoUrl != null);

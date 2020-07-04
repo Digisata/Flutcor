@@ -126,6 +126,7 @@ class AboutPage extends StatelessWidget {
 
   CircleAvatar _photoProfile(BuildContext context, String url) {
     return CircleAvatar(
+      backgroundColor: Colors.transparent,
       radius: ContentSize.height(context) * 0.08,
       child: CachedNetworkImage(
         fit: BoxFit.cover,
@@ -140,7 +141,7 @@ class AboutPage extends StatelessWidget {
           height: ContentSize.height(context) * 0.16,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
+            color: Colors.transparent,
             image: DecorationImage(
               image: imageProvider,
               fit: BoxFit.cover,

@@ -48,8 +48,14 @@ class AppProvider with ChangeNotifier {
   void getUserData() async {
     try {
       final FirebaseUser _user = await _firebaseAuths.getCurrentUser();
-      _photoUrl = _user.photoUrl.toString();
-      _username = _user.displayName.toString();
+      if (_user.isAnonymous) {
+        _photoUrl =
+            'https://smallimg.pngkey.com/png/small/7-73855_free-png-anonymous-mask-png-images-transparent-anonymous.png';
+        _username = 'Anonymous';
+      } else {
+        _photoUrl = _user.photoUrl.toString();
+        _username = _user.displayName.toString();
+      }
       _appSharedPreferences.setUserData(_photoUrl, _username);
       notifyListeners();
     } catch (error) {
